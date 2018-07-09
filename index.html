@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>calc</title>
+</head>
+<body>
+<div style="
+             padding: 10px; 
+             width:300px;
+             border-radius: 15px;
+             border-width: 3px;
+             border-color: black;
+             border-style: solid;
+             " 
+             align="center">
+    <h2>Калькулятор розрахунку пені</h2>
+	 <form onsubmit="return false;" oninput="changeText0()">
+	 	<p>Сума простроченого боргу:</p>
+		<i><input id="sum" type="number"></i><br>
+		<p>Дата початку нарахування збитків:</p>
+		<i><input id="beginingDate" type="date"></i><br>
+		<p>Кінцева дата нарахування збитків:</p>
+		<i><input id="endingDate" type="date"></i><br>
+		<p>Облікова ставка пені(%)*:</p>
+		<i><input id="stavka" type="number">%</i><br>
+	</form>	
+
+	<form action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data">
+		<p><b>Пеня:</b><br></p>
+		<input type="text" name="QUANTITY" value="1" id="QUANTITY">
+	</form>
+
+	<p><a href="https://bank.gov.ua/control/uk/publish/article?art_id=53647">*Облікова ставка Національного банку України</a>, що діяла в період, за який сплачується пеня (ст. 3 Закону України "Про відповідальність за несвоєчасне виконання грошових зобов'язань").</p>
+</div> 
+
+<script type="text/javascript">
+	function changeText0(){
+	var QUANTITY = 1;
+	var DATE = 1;
+	
+    var date1 = new Date(document.getElementById('beginingDate').value);
+    var date2 = new Date(document.getElementById('endingDate').value);
+    var daysLag = Math.ceil(Math.abs(date2.getTime() - date1.getTime()) / (1000 * 3600 * 24));
+
+	QUANTITY *= parseFloat(document.getElementById('sum').value);
+	QUANTITY *= daysLag; 
+	QUANTITY *= parseFloat(document.getElementById('stavka').value);
+	QUANTITY *= 2; 
+	QUANTITY /= 36500;
+	document.getElementById('QUANTITY').value =  QUANTITY;
+	}	
+</script>
+</body>
+</html>
